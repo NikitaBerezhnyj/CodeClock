@@ -23,10 +23,29 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onView:codeclock.sidebar"
   ],
   "main": "./out/extension.js",
-  "contributes": {},
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "codeclock",
+          "title": "CodeClock",
+          "icon": "assets/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "codeclock": [
+        {
+          "id": "codeclock.sidebar",
+          "name": "Timer",
+          "type": "webview"
+        }
+      ]
+    }
+  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",

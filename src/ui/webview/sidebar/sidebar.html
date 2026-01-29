@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; style-src {{cspSource}} 'unsafe-inline'; script-src 'nonce-{{nonce}}';">
+    <link rel="stylesheet" href="{{styleUri}}">
+    <title>CodeClock</title>
+</head>
+
+<body>
+    <div class="timer-section">
+        <div class="timer-display" id="timer">00:00:00</div>
+        <button class="button" id="toggleBtn">Start</button>
+    </div>
+
+    <div class="history-section">
+        <h3 class="history-title">History</h3>
+        <div class="history-total">
+            <span>Total: </span>
+            <span>{{totalDuration}}</span>
+        </div>
+        {{sessionsList}}
+    </div>
+
+    <script nonce="{{nonce}}" src="{{scriptUri}}"></script>
+</body>
+
+</html>

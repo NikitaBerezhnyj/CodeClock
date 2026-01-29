@@ -1,0 +1,84 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 16px;
+    color: var(--vscode-foreground);
+    font-family: var(--vscode-font-family);
+    font-size: var(--vscode-font-size);
+}
+
+.timer-section {
+    margin-bottom: 24px;
+}
+
+.timer-display {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    margin: 16px 0;
+    font-family: monospace;
+    color: var(--vscode-textLink-foreground);
+}
+
+.button {
+    width: 100%;
+    padding: 8px 16px;
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: var(--vscode-font-family);
+}
+
+.button:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+
+.button:active {
+    background-color: var(--vscode-button-background);
+    opacity: 0.8;
+}
+
+.history-section {
+    border-top: 1px solid var(--vscode-panel-border);
+    padding-top: 16px;
+}
+
+.history-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--vscode-foreground);
+}
+
+.history-total {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--vscode-panel-border);
+    color: var(--vscode-foreground);
+}
+
+.history-item {
+    font-size: 13px;
+    padding: 6px 0;
+    color: var(--vscode-descriptionForeground);
+    display: flex;
+    justify-content: space-between;
+}
+
+.history-duration {
+    font-weight: 500;
+    color: var(--vscode-foreground);
+}
+
+.history-date {
+    opacity: 0.8;
+}
