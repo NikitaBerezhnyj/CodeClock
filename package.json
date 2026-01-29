@@ -1,0 +1,53 @@
+{
+  "name": "codeclock",
+  "displayName": "CodeClock",
+  "description": "Automatic project time tracking with idle detection.",
+  "version": "0.0.1",
+  "icon": "assets/icon.png",
+  "publisher": "NikitaBerezhnyj",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NikitaBerezhnyj/CodeClock"
+  },
+  "keywords": [
+    "time tracking",
+    "productivity",
+    "project",
+    "workspace",
+    "developer"
+  ],
+  "engines": {
+    "vscode": "^1.108.1"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {},
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "format": "prettier --write src/",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@eslint/json": "^0.14.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@types/vscode": "^1.108.1",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.39.2",
+    "globals": "^17.2.0",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.54.0"
+  }
+}
