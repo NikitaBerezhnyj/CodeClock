@@ -27,6 +27,13 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "commands": [
+      {
+        "command": "codeclock.openSidebar",
+        "title": "View Timer",
+        "category": "CodeClock"
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {

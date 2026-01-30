@@ -5,6 +5,12 @@ import { StatusBar } from "./ui/StatusBar";
 export function activate(context: vscode.ExtensionContext) {
   console.log("[CodeClock]: Activating CodeClock extension...");
 
+  const openSidebarCommand = vscode.commands.registerCommand("codeclock.openSidebar", async () => {
+    await vscode.commands.executeCommand("workbench.view.extension.codeclock");
+  });
+
+  context.subscriptions.push(openSidebarCommand);
+
   const statusBar = new StatusBar();
   statusBar.show();
   context.subscriptions.push(statusBar);

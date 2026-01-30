@@ -5,6 +5,8 @@ export class StatusBar {
 
   constructor() {
     this._statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+
+    this._statusBarItem.command = "codeclock.openSidebar";
   }
 
   public show() {
