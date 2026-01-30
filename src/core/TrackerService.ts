@@ -11,7 +11,7 @@ export class TrackerService {
 
   constructor(
     private storage: LocalStorage,
-    private idleMinutes = 1
+    private idleMinutes = 30
   ) {}
 
   async tryAutoStart() {
