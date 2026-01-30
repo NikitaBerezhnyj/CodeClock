@@ -32,6 +32,16 @@
         "command": "codeclock.openSidebar",
         "title": "View Timer",
         "category": "CodeClock"
+      },
+      {
+        "command": "codeclock.startTimer",
+        "title": "Start Timer",
+        "category": "CodeClock"
+      },
+      {
+        "command": "codeclock.stopTimer",
+        "title": "Stop Timer",
+        "category": "CodeClock"
       }
     ],
     "viewsContainers": {

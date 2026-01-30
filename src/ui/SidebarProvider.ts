@@ -1,19 +1,22 @@
 import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
+import { TrackerService } from "../core/TrackerService";
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
   private _view?: vscode.WebviewView;
-  private running = false;
-  private timerSeconds = 0;
-  private interval?: ReturnType<typeof setInterval>;
+  private _interval?: NodeJS.Timeout;
+
   private sessions: { date: string; duration: string }[] = [
     { date: "30.01.2026", duration: "1h 20m" },
     { date: "29.01.2026", duration: "45m" },
     { date: "15.01.2026", duration: "2h 5m" }
   ];
 
-  constructor(private context: vscode.ExtensionContext) {}
+  constructor(
+    private context: vscode.ExtensionContext,
+    private tracker: TrackerService
+  ) {}
 
   activate() {
     this.context.subscriptions.push(
@@ -26,21 +29,12 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       })
     );
 
-    this.interval = setInterval(() => {
-      if (this.running) {
-        this.timerSeconds++;
-        this.updateWebview();
-      }
+    this._interval = setInterval(() => {
+      this.updateWebview();
     }, 1000);
   }
 
-  resolveWebviewView(
-    webviewView: vscode.WebviewView,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _context: vscode.WebviewViewResolveContext,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _token: vscode.CancellationToken
-  ) {
+  resolveWebviewView(webviewView: vscode.WebviewView) {
     this._view = webviewView;
 
     webviewView.webview.options = {
@@ -51,38 +45,42 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     webviewView.webview.html = this.getHtmlContent();
 
     webviewView.webview.onDidReceiveMessage(message => {
-      switch (message.command) {
-        case "toggleTimer":
-          this.toggleTimer();
-          break;
+      if (message.command === "toggleTimer") {
+        this.toggleTimer();
       }
     });
+
+    this.updateWebview();
   }
 
   private toggleTimer() {
-    this.running = !this.running;
+    this.tracker.toggle();
     this.updateWebview();
-    vscode.window.showInformationMessage(this.running ? "Таймер запущено" : "Таймер зупинено");
   }
 
   private updateWebview() {
-    if (this._view) {
-      this._view.webview.postMessage({
-        command: "updateTimer",
-        time: this.formatTime(this.timerSeconds),
-        running: this.running
-      });
-    }
+    if (!this._view) return;
+
+    const totalMs = this.tracker.getTotalMs();
+
+    this._view.webview.postMessage({
+      command: "updateTimer",
+      time: this.formatTime(totalMs),
+      running: this.tracker.isRunning?.() ?? true
+    });
   }
 
-  private formatTime(seconds: number): string {
-    const h = Math.floor(seconds / 3600)
+  private formatTime(ms: number): string {
+    const totalSeconds = Math.floor(ms / 1000);
+
+    const h = Math.floor(totalSeconds / 3600)
       .toString()
       .padStart(2, "0");
-    const m = Math.floor((seconds % 3600) / 60)
+    const m = Math.floor((totalSeconds % 3600) / 60)
       .toString()
       .padStart(2, "0");
-    const s = (seconds % 60).toString().padStart(2, "0");
+    const s = (totalSeconds % 60).toString().padStart(2, "0");
+
     return `${h}:${m}:${s}`;
   }
 
@@ -143,8 +141,8 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   }
 
   dispose() {
-    if (this.interval) {
-      clearInterval(this.interval);
+    if (this._interval) {
+      clearInterval(this._interval);
     }
   }
 }
