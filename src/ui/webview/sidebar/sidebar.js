@@ -6,13 +6,15 @@ toggleBtn.addEventListener("click", () => {
   vscode.postMessage({ command: "toggleTimer" });
 });
 
-window.addEventListener("message", event => {
-  const message = event.data;
+function renderState(state) {
+  timerDisplay.textContent = state.time;
+  toggleBtn.textContent = state.running ? "Pause" : "Start";
+}
 
-  switch (message.command) {
-    case "updateTimer":
-      timerDisplay.textContent = message.time;
-      toggleBtn.textContent = message.running ? "Stop" : "Start";
-      break;
+window.addEventListener("message", event => {
+  const { command, payload } = event.data;
+
+  if (command === "state") {
+    renderState(payload);
   }
 });

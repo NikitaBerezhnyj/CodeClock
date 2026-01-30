@@ -3,6 +3,11 @@ import * as fs from "fs";
 import * as path from "path";
 import { TrackerService } from "../core/TrackerService";
 
+type TrackerState = {
+  time: string;
+  running: boolean;
+};
+
 export class SidebarProvider implements vscode.WebviewViewProvider {
   private _view?: vscode.WebviewView;
   private _interval?: NodeJS.Timeout;
@@ -58,15 +63,19 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     this.updateWebview();
   }
 
+  private getState(): TrackerState {
+    return {
+      time: this.formatTime(this.tracker.getTotalMs()),
+      running: this.tracker.isRunning()
+    };
+  }
+
   private updateWebview() {
     if (!this._view) return;
 
-    const totalMs = this.tracker.getTotalMs();
-
     this._view.webview.postMessage({
-      command: "updateTimer",
-      time: this.formatTime(totalMs),
-      running: this.tracker.isRunning?.() ?? true
+      command: "state",
+      payload: this.getState()
     });
   }
 
