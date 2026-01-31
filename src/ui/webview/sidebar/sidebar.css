@@ -82,3 +82,10 @@ body {
 .history-date {
     opacity: 0.8;
 }
+
+.history-empty {
+    text-align: center;
+    padding: 20px;
+    color: var(--vscode-descriptionForeground);
+    font-style: italic;
+}

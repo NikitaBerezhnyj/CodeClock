@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
 import { TrackerService } from "../core/TrackerService";
+import { Session } from "../model/Session";
 
 type TrackerState = {
   time: string;
@@ -11,12 +12,6 @@ type TrackerState = {
 export class SidebarProvider implements vscode.WebviewViewProvider {
   private _view?: vscode.WebviewView;
   private _interval?: NodeJS.Timeout;
-
-  private sessions: { date: string; duration: string }[] = [
-    { date: "30.01.2026", duration: "1h 20m" },
-    { date: "29.01.2026", duration: "45m" },
-    { date: "15.01.2026", duration: "2h 5m" }
-  ];
 
   constructor(
     private context: vscode.ExtensionContext,
@@ -70,6 +65,42 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     };
   }
 
+  private getSessionsHtml(): string {
+    const sessions: Session[] = this.tracker.getSessions();
+
+    if (sessions.length === 0) {
+      return '<div class="history-empty">No sessions yet</div>';
+    }
+
+    return sessions
+      .map(s => {
+        const startDate = new Date(s.startedAt);
+
+        const day = startDate.getDate().toString().padStart(2, "0");
+        const month = (startDate.getMonth() + 1).toString().padStart(2, "0");
+        const year = startDate.getFullYear();
+
+        const hours = startDate.getHours().toString().padStart(2, "0");
+        const minutes = startDate.getMinutes().toString().padStart(2, "0");
+
+        const formattedDate = `${day}.${month}.${year} - ${hours}:${minutes}`;
+        const duration = this.formatTimeShort(s.durationMs);
+
+        return `
+        <div class="history-item">
+            <span class="history-date">${formattedDate}</span>
+            <span class="history-duration">${duration}</span>
+        </div>`;
+      })
+      .reverse()
+      .join("");
+  }
+
+  private getTotalDuration(): string {
+    const totalMs = this.tracker.getProjectTotalMs();
+    return this.formatTotalTime(totalMs);
+  }
+
   private updateWebview() {
     if (!this._view) return;
 
@@ -77,11 +108,18 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       command: "state",
       payload: this.getState()
     });
+
+    this._view.webview.postMessage({
+      command: "updateHistory",
+      payload: {
+        totalDuration: this.getTotalDuration(),
+        sessionsList: this.getSessionsHtml()
+      }
+    });
   }
 
   private formatTime(ms: number): string {
     const totalSeconds = Math.floor(ms / 1000);
-
     const h = Math.floor(totalSeconds / 3600)
       .toString()
       .padStart(2, "0");
@@ -89,22 +127,50 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       .toString()
       .padStart(2, "0");
     const s = (totalSeconds % 60).toString().padStart(2, "0");
-
     return `${h}:${m}:${s}`;
   }
 
-  private getHtmlContent(): string {
-    const totalDuration = "4h 10m";
+  private formatTimeShort(ms: number): string {
+    const totalMinutes = Math.floor(ms / 1000 / 60);
+    const h = Math.floor(totalMinutes / 60);
+    const m = (totalMinutes % 60).toString().padStart(2, "0");
+    const s = Math.floor((ms / 1000) % 60)
+      .toString()
+      .padStart(2, "0");
 
-    const sessionsList = this.sessions
-      .map(
-        session => `
-        <div class="history-item">
-            <span class="history-duration">${session.duration}</span>
-            <span class="history-date">${session.date}</span>
-        </div>`
-      )
-      .join("");
+    return `${h}h ${m}m ${s}s`;
+  }
+
+  private formatTotalTime(ms: number): string {
+    const totalMinutes = Math.floor(ms / 1000 / 60);
+
+    const minutes = totalMinutes % 60;
+    const totalHours = Math.floor(totalMinutes / 60);
+    const hours = totalHours % 24;
+    const totalDays = Math.floor(totalHours / 24);
+    const days = totalDays % 30;
+    const totalMonths = Math.floor(totalDays / 30);
+    const months = totalMonths % 12;
+    const years = Math.floor(totalMonths / 12);
+
+    const parts = [];
+    if (years > 0) parts.push(`${years}y`);
+    if (months > 0) parts.push(`${months}mo`);
+    if (days > 0) parts.push(`${days}d`);
+    if (hours > 0) parts.push(`${hours}h`);
+    if (minutes > 0) parts.push(`${minutes}m`);
+
+    const display = parts.join(" ") || "0m";
+
+    const totalHoursExact = Math.floor(totalMinutes / 60);
+    const tooltip = `${totalHoursExact}h ${minutes}m`;
+
+    return `<span title="${tooltip}">${display}</span>`;
+  }
+
+  private getHtmlContent(): string {
+    const sessionsList = this.getSessionsHtml();
+    const totalDuration = this.getTotalDuration();
 
     const htmlPath = path.join(
       this.context.extensionPath,
@@ -121,6 +187,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         path.join(this.context.extensionPath, "src", "ui", "webview", "sidebar", "sidebar.css")
       )
     );
+
     const scriptUri = this._view!.webview.asWebviewUri(
       vscode.Uri.file(
         path.join(this.context.extensionPath, "src", "ui", "webview", "sidebar", "sidebar.js")
@@ -150,8 +217,6 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   }
 
   dispose() {
-    if (this._interval) {
-      clearInterval(this._interval);
-    }
+    if (this._interval) clearInterval(this._interval);
   }
 }

@@ -5,35 +5,44 @@ import { TrackerService } from "./core/TrackerService";
 import { LocalStorage } from "./storage/LocalStorage";
 import { WorkspaceService } from "./core/WorkspaceService";
 
+let tracker: TrackerService | null = null;
+
 export function activate(context: vscode.ExtensionContext) {
   console.log("[CodeClock]: Activating CodeClock extension...");
 
   const storage = new LocalStorage(context.globalState);
-  const tracker = new TrackerService(storage);
+  tracker = new TrackerService(storage);
 
   tracker.tryAutoStart();
 
   context.subscriptions.push(
     vscode.workspace.onDidChangeWorkspaceFolders(() => {
       const workspaceId = WorkspaceService.getCurrentWorkspaceId();
-
       if (workspaceId) {
-        tracker.switchWorkspace(workspaceId);
+        tracker?.switchWorkspace(workspaceId);
       } else {
-        tracker.deactivateWorkspace();
+        tracker?.deactivateWorkspace();
       }
     }),
     vscode.commands.registerCommand("codeclock.startTimer", () => {
-      tracker.start();
+      tracker?.start();
     }),
     vscode.commands.registerCommand("codeclock.stopTimer", () => {
-      tracker.stop();
+      tracker?.stop();
+    }),
+    vscode.commands.registerCommand("codeclock.clearData", async () => {
+      const workspaceId = WorkspaceService.getCurrentWorkspaceId();
+      if (workspaceId) {
+        await storage.set(`project:${workspaceId}`, null);
+        await storage.set(`active-session:${workspaceId}`, null);
+        vscode.window.showInformationMessage("CodeClock data cleared!");
+      }
     })
   );
 
   const persistInterval = setInterval(() => {
-    tracker.persist();
-    console.log("[CodeClock] Tick", Math.round(tracker.getTotalMs() / 1000), "sec");
+    tracker?.persist();
+    console.log("[CodeClock] Tick", Math.round((tracker?.getTotalMs() ?? 0) / 1000), "sec");
   }, 30_000);
 
   context.subscriptions.push({
@@ -61,4 +70,6 @@ export function activate(context: vscode.ExtensionContext) {
   console.log("[CodeClock]: CodeClock activated");
 }
 
-export function deactivate() {}
+export function deactivate() {
+  return tracker?.deactivateWorkspace();
+}
