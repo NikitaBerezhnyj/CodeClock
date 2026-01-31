@@ -19,6 +19,11 @@ export class Clock {
     this.lastStartedAt = null;
   }
 
+  reset() {
+    this.accumulatedMs = 0;
+    this.lastStartedAt = null;
+  }
+
   isRunning(): boolean {
     return this.lastStartedAt !== null;
   }
