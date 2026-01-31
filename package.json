@@ -22,9 +22,7 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onView:codeclock.sidebar"
-  ],
+  "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -58,6 +56,7 @@
         {
           "id": "codeclock.sidebar",
           "name": "Timer",
+          "icon": "assets/icon.svg",
           "type": "webview"
         }
       ]
