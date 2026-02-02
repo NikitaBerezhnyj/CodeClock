@@ -1,71 +1,171 @@
-# CodeClock README
+# CodeClock
 
-This is the README for your extension "CodeClock". After writing up a brief description, we recommend including the following sections.
+This README is available in [English :uk:](#codeclock-uk) and [Ukrainian :ukraine:](#codeclock-ukraine)
+
+## CodeClock :uk:
+
+<p align='center'>
+  <img src='assets/icon.png' alt='Extension Icon' style="width:50%">
+</p>
+
+## Overview
+
+CodeClock is a time tracking extension for Visual Studio Code that automatically tracks the time you spend coding in each workspace. It monitors your activity, pauses during idle periods, and provides detailed statistics about your coding sessions.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- **Automatic time tracking**: CodeClock automatically starts tracking when you open a workspace and stops when you close it.
+- **Idle detection**: Automatically pauses the timer after 30 minutes of inactivity and prompts you to resume.
+- **Per-workspace tracking**: Tracks time separately for each workspace, allowing you to see how much time you've spent on different projects.
+- **Session history**: Keeps a detailed history of all your coding sessions with timestamps and durations.
+- **Status bar integration**: Displays the current project name and elapsed time directly in the VS Code status bar.
+- **Sidebar panel**: Dedicated sidebar view showing:
+  - Current session timer
+  - Total time spent on the project
+  - Complete session history
+- **Persistent storage**: All data is saved automatically and survives VS Code restarts.
 
-For example if there is an image subfolder under your extension project workspace:
+## Technologies Used
 
-\!\[feature X\]\(images/feature-x.png\)
+- TypeScript
+- Visual Studio Code Extension API
+- VSCE (Visual Studio Code Extension packaging tool)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Getting Started
 
-## Requirements
+To get started with CodeClock, follow these steps:
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+1. Clone the repository:
 
-## Extension Settings
+   ```bash
+   git clone https://github.com/YourUsername/CodeClock.git
+   ```
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+2. Navigate to the project folder:
 
-For example:
+   ```bash
+   cd CodeClock
+   ```
 
-This extension contributes the following settings:
+3. Install dependencies:
 
-- `myExtension.enable`: Enable/disable this extension.
-- `myExtension.thing`: Set to `blah` to do something.
+   ```bash
+   npm install
+   ```
 
-## Known Issues
+4. Build the extension:
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+   ```bash
+   vsce package
+   ```
 
-## Release Notes
+5. Install the extension in Visual Studio Code using the **"Install from VSIX"** option.
 
-Users appreciate release notes as you update your extension.
+## Usage
 
-### 1.0.0
+Once CodeClock is installed:
 
-Initial release of ...
+1. Open Visual Studio Code with a workspace folder.
+2. CodeClock will automatically start tracking your time.
+3. View your time in two ways:
+   - **Status bar**: Shows project name and current session time (e.g., "MyProject — 1h 23m")
+   - **Sidebar**: Click the CodeClock icon or the status bar to open the detailed view
+4. The timer automatically pauses after 30 minutes of inactivity and prompts you to resume.
+5. Use commands:
+   - `CodeClock: Start Timer` — manually start the timer
+   - `CodeClock: Stop Timer` — manually stop the timer
+   - `CodeClock: Clear Data` — clear all tracking data for the current workspace
 
-### 1.0.1
+All your coding session data is saved automatically and will be preserved between VS Code sessions.
 
-Fixed issue #.
+## License & Community Guidelines
 
-### 1.1.0
-
-Added features X, Y, and Z.
+- [License](LICENSE) — project license.
+- [Code of Conduct](CODE_OF_CONDUCT.md) — expected behavior for contributors.
+- [Contributing Guide](CONTRIBUTING.md) — how to help the project.
+- [Security Policy](SECURITY.md) — reporting security issues.
 
 ---
 
-## Following extension guidelines
+## CodeClock :ukraine:
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+<p align='center'>
+  <img src='assets/icon.png' alt='Extension Icon' style="width:50%">
+</p>
 
-- [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+## Огляд
 
-## Working with Markdown
+CodeClock — це розширення для відстеження часу в Visual Studio Code, яке автоматично відстежує час, який ви витрачаєте на кодування в кожному робочому просторі. Воно моніторить вашу активність, призупиняється під час простою та надає детальну статистику про ваші сесії кодування.
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+## Особливості
 
-- Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-- Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-- Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+- **Автоматичне відстеження часу**: CodeClock автоматично починає відстеження, коли ви відкриваєте робочий простір, і зупиняється, коли ви його закриваєте.
+- **Виявлення простою**: Автоматично призупиняє таймер після 30 хвилин неактивності та пропонує вам продовжити.
+- **Відстеження для кожного робочого простору**: Відстежує час окремо для кожного робочого простору, дозволяючи бачити, скільки часу ви витратили на різні проєкти.
+- **Історія сесій**: Зберігає детальну історію всіх ваших сесій кодування з мітками часу та тривалістю.
+- **Інтеграція зі статус-баром**: Відображає назву поточного проєкту та час безпосередньо в статус-барі VS Code.
+- **Бокова панель**: Окремий вигляд бокової панелі, що показує:
+  - Таймер поточної сесії
+  - Загальний час, витрачений на проєкт
+  - Повну історію сесій
+- **Постійне зберігання**: Всі дані зберігаються автоматично та залишаються після перезапуску VS Code.
 
-## For more information
+## Використані технології
 
-- [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-- [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+- TypeScript
+- Visual Studio Code Extension API
+- VSCE (інструмент для пакування розширень Visual Studio Code)
 
-**Enjoy!**
+## Початок роботи
+
+Щоб розпочати роботу з CodeClock, виконайте наступні кроки:
+
+1. Клонуйте репозиторій:
+
+   ```bash
+   git clone https://github.com/YourUsername/CodeClock.git
+   ```
+
+2. Перейдіть до папки проекту:
+
+   ```bash
+   cd CodeClock
+   ```
+
+3. Встановіть залежності:
+
+   ```bash
+   npm install
+   ```
+
+4. Зберіть розширення:
+
+   ```bash
+   vsce package
+   ```
+
+5. Встановіть розширення у Visual Studio Code за допомогою опції **"Install from VSIX"**.
+
+## Використання
+
+Після встановлення CodeClock:
+
+1. Відкрийте Visual Studio Code з папкою робочого простору.
+2. CodeClock автоматично почне відстежувати ваш час.
+3. Переглядайте свій час двома способами:
+   - **Статус-бар**: Показує назву проєкту та час поточної сесії (наприклад, "MyProject — 1h 23m")
+   - **Бокова панель**: Клацніть на іконку CodeClock або статус-бар, щоб відкрити детальний вигляд
+4. Таймер автоматично призупиняється після 30 хвилин неактивності та пропонує вам продовжити.
+5. Використовуйте команди:
+   - `CodeClock: Start Timer` — вручну запустити таймер
+   - `CodeClock: Stop Timer` — вручну зупинити таймер
+   - `CodeClock: Clear Data` — очистити всі дані відстеження для поточного робочого простору
+
+Всі дані ваших сесій кодування зберігаються автоматично та будуть збережені між сесіями VS Code.
+
+## Ліцензія та правила спільноти
+
+- [Ліцензія](LICENSE) — ліцензія проекту.
+- [Кодекс поведінки](CODE_OF_CONDUCT.md) — очікувана поведінка для учасників.
+- [Посібник для внеску](CONTRIBUTING.md) — як допомогти проекту.
+- [Політика безпеки](SECURITY.md) — повідомлення про проблеми безпеки.
