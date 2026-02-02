@@ -94,12 +94,3 @@ jobs:
             --notes "Automated VS Code extension release"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install vsce
-        run: npm install -g vsce
-
-      - name: Publish to VS Code Marketplace
-        run: |
-          vsce publish --packagePath ./artifacts/${{ steps.get_meta.outputs.NAME }}.vsix --pat $VSCE_PAT
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
