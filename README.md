@@ -53,13 +53,19 @@ To get started with CodeClock, follow these steps:
    npm install
    ```
 
-4. Build the extension:
+4. Press `F5` to open debug extension
+
+## Build
+
+For build extension follow this steps:
+
+1. Build the extension:
 
    ```bash
    vsce package
    ```
 
-5. Install the extension in Visual Studio Code using the **"Install from VSIX"** option.
+2. Install the extension in Visual Studio Code using the **"Install from VSIX"** option.
 
 ## Usage
 
@@ -138,13 +144,19 @@ CodeClock — це розширення для відстеження часу �
    npm install
    ```
 
-4. Зберіть розширення:
+4. Натисніть `F5` щоб відкрити debug розширення
+
+## Збірка
+
+Щоб зібрати розширення слідуйте наступним крокам:
+
+1. Зберіть розширення:
 
    ```bash
    vsce package
    ```
 
-5. Встановіть розширення у Visual Studio Code за допомогою опції **"Install from VSIX"**.
+2. Встановіть розширення у Visual Studio Code за допомогою опції **"Install from VSIX"**.
 
 ## Використання
 

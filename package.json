@@ -63,13 +63,17 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p .",
     "lint": "eslint src",
-    "format": "prettier --write src/",
-    "test": "vscode-test"
+    "format": "prettier --write src",
+    "test": "vscode-test",
+    "pretest": "npm run lint && npm run compile",
+    "vscode:prepublish": "npm run compile",
+    "build": "vsce package",
+    "prepare:readme": "shx mv README.md README.md.bak && shx cp docs/README.md README.md",
+    "restore:readme": "shx rm README.md && shx mv README.md.bak README.md",
+    "package": "npm run prepare:readme && npm run build && npm run restore:readme"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
@@ -82,6 +86,7 @@
     "eslint": "^9.39.2",
     "globals": "^17.2.0",
     "prettier": "^3.8.1",
+    "shx": "^0.4.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.54.0"
   }
